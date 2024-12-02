@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  #nombre del replicaset
+  name: greet-rs
+spec:
+  replicas: 3
+  selector:
+    #selector del pod
+    matchLabels:
+      app: greet
+  #plantilla del pod
+  template:
+    metadata:
+      labels:
+        app: greet
+    spec:
+      containers:
+        - name: greet
+          image: eduard2diaz/greet:storage
+          ports:
+            - containerPort: 8080

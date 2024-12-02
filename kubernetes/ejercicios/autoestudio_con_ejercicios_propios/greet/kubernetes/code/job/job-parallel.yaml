@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+spec:
+  completions: 5
+  parallelism: 2
+  template:
+    metadata:
+      name: hello-job
+    spec:
+      containers:
+        - name: hello-container
+          image: eduard2diaz/greet:storage
+          ports:
+            - containerPort: 8080
+          #command no es requerido, es valido solo en casos de que ademas de levantar el contenedor, se ejecute un determinado comando
+          command: ["echo", "Hello, World!"]
+      restartPolicy: Never
+  backoffLimit: 4

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80        # Puerto expuesto por el Servicio
+      targetPort: 8080 # Redirige al puerto 8080 del contenedor
+  selector:
+    app: greet

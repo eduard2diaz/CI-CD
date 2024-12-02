@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: greet-pod
+  labels:
+    app: greet
+spec:
+  containers:
+    - name: greet
+      image: eduard2diaz/greet:storage

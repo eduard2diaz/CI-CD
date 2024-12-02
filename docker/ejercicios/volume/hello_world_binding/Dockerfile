@@ -1,0 +1,18 @@
+FROM node
+
+WORKDIR /app
+COPY package.json .
+RUN npm install
+EXPOSE 3000
+CMD [ "node", "app.js"]
+
+#FIJATE QUE EN ESTE EJEMPLO NO ESTAMOS COPIANDO LA INFORMACION, SIMPLEMENTE VAMOS A HACER UN ENLACE SIMBOLICO DE DONDE ESTA EL PROYECTO EN EL HOST,
+#A LA CARPETA DESTINO EN EL CONTENEDOR, PARA ELLO USAREMOS EL SIGUIENTE COMANDO:
+#docker run -p 3000:3000 -v "/Users/neyvislopez/Desktop/learning docker/ejercicios/hello_world_binding:/app" binding_example
+#POR OTRA PARTE SI QUEREMOS QUE DESDE EL CONTENEDOR NO SE PUEDA MODIFICAR EL VOLUMEN BASTARIA CON USAR :ro DETRAS DE LA RUTA DE LA CARPETA EN EL CONTENEDOR
+#USA LAS COMILLAS, PUES INTENTE SIN ELLAS Y NO FUNCIONO, EN ESTE CASO SERIA:
+#docker run -p 3000:3000 -v "/Users/neyvislopez/Desktop/learning docker/ejercicios/hello_world_binding:/app:ro" binding_example
+
+
+
+

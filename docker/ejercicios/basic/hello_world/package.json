@@ -1,0 +1,13 @@
+{
+    "name": "hola-mundo",
+    "version": "1.0.0",
+    "description": "Un ejemplo básico de Hola Mundo en Node.js",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js"
+    },
+    "keywords": ["hola", "mundo", "nodejs", "ejemplo"],
+    "author": "Tu Nombre",
+    "license": "MIT"
+  }
+  

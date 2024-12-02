@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greet
+  template:
+    metadata:
+      labels:
+        app: greet
+    spec:
+      containers:
+        - name: greet
+          image: eduard2diaz/greet:storage
+          env:
+            - name: APP_NAME
+              valueFrom: 
+                configMapKeyRef:
+                  name: greet-env
+                  key: llave_env

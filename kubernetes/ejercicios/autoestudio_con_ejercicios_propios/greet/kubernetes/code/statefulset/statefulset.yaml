@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  #nombre del statefulset
+  name: greet
+spec:
+  #Nombre del servicio a utilizar
+  serviceName: "greet"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: greet
+  template:
+    metadata:
+      labels:
+        app: greet
+    spec:
+      containers:
+        - name: greet-statefulset
+          image: eduard2diaz/greet:storage
+          ports:
+            - containerPort: 8080
+              #definimos un nombre simbolico para el puerto
+              name: http

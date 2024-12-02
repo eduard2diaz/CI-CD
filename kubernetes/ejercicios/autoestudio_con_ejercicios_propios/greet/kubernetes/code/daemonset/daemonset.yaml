@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: greet
+spec:
+  selector:
+    matchLabels:
+      name: greet
+  template:
+    metadata:
+      labels:
+        name: greet
+    spec:
+      containers:
+        - name: greet
+          image: eduard2diaz/greet:storage
+          ports:
+              - containerPort: 8080

@@ -1,0 +1,7 @@
+Commando ejecutado: 
+
+Para copiar dentro del contenedor
+docker copy test_folder/. nombre_contenedor:ruta
+
+Para copiar desde el contenedor
+docker cp nombre_contenedor:ruta ruta_local

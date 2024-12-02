@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  #nombre del service
+  name: greet-internal-service
+spec:
+  selector: 
+    app: greet
+  ports:
+    - protocol: 'TCP'
+      #puerto interno del service
+      port: 80
+      targetPort: 8080
+  type: NodePort

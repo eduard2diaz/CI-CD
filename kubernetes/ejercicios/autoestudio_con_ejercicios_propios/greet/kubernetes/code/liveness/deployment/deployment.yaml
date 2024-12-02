@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greet
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: greet
+  minReadySeconds: 5
+  progressDeadlineSeconds: 600
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        app: greet
+    spec:
+      containers:
+        - name: greet
+          image: eduard2diaz/greet:storage
+          ports:
+            - containerPort: 8080

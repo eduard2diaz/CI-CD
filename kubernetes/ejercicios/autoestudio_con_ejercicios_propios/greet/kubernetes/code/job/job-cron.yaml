@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello-job
+spec:
+  schedule: "0,15,30,45 * * * *" # Corre cada 15 minutos
+  jobTemplate:
+    metadata:
+      labels:
+        app: greet
+    spec:
+      template:
+        metadata:
+          labels:
+            app: greet
+        spec:
+          containers:
+            - name: hello-container
+              image: eduard2diaz/greet:storage
+              ports:
+                - containerPort: 8080
+              command: ["echo", "Hello, World!"]
+          restartPolicy: Never

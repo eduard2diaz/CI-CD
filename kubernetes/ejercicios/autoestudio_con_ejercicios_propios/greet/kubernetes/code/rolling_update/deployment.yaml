@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greet-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: greet
+  template:
+    metadata:
+      labels:
+        app: greet
+    spec:
+      containers:
+        - name: greet
+          image: eduard2diaz/greet:storage  # Cambia esta línea a la nueva versión de la imagen
+          ports:
+            - containerPort: 8080

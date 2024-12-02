@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  #el nombre del endpoint debe coincidir con el nombre del servicio
+  name: external-service
+subsets:
+  #direcciones del endpoint al que el servicio debe redirigir las conexiones
+  - addresses:
+    - ip: 11.11.11.11
+    - ip: 22.22.22.22
+    #puerto destino en el endpoint
+    ports:
+      #puerto por donde corre la app
+      - port: 8080

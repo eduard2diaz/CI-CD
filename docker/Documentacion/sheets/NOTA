@@ -1,0 +1,7 @@
+Algunos comandos utiles:
+Renombrar una imagen: 
+
+	docker tag image_vieja imagen_nueva
+
+Ej:
+	> docker tag kub-first-app eduard2diaz/kub-first-app

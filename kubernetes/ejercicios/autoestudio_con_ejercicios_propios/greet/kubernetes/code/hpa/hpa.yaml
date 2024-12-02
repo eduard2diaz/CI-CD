@@ -1,0 +1,14 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: greet-replicaset
+  namespace: default
+spec:
+  maxReplicas: 5
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: greet
+  #HPA escalará los pods solo si el promedio de uso de la CPU de los Pods del Deployment greet supera el 10% de la CPU solicitada.
+  targetCPUUtilizationPercentage: 10

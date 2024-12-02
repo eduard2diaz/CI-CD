@@ -1,0 +1,89 @@
+#Version de la especificacion de docker-compose que vamos a utilizar
+version: "3.8"
+
+services:
+#Todos los servicios deben estar al mismo nivel, y la etiqueta que usamos para ellos es decision nuestra
+  mongodb:
+    #indicamos a imagen que vamos a usar (Se pone entre comillas, sobre todo por si vamos a indicar una version en especifico)
+    image: 'mongo'
+    #Si queremos definir un nombre especifico al contenedor, y no solamente el nombre de la etiqueta del servicio, bastaria con:
+    container_name: mongodb
+    volumes:
+      #Para un volumen nombrado, incluso podemos decir si el volumen es de solo lectura
+      #- data:/data/db:ro
+      - data:/data/db
+    #para definir las variables de entorno  
+    #environment:
+      #Forma 1
+      #MONGO_INITDB_ROOT_USERNAME: max
+      #Forma 2
+      #- MONGO_INITDB_ROOT_USERNAME=max
+    #FORMA 3 fichero de configuracion usando ruta relativa desde el fichero docker-compose
+    env_file:
+      - ./env/mongo.env
+    #Aunque no es necesario en este caso definir la red, porque por defecto docker compose crea una red a la que pertenecen todos los servicios que definamos en un mismo docker-compose
+    #a menos que lo cambiemos
+    #networks:
+    #  #Nombre de la(s) red(es) a la que pertenece
+    #  - goals-net
+
+  backend:
+    #Le indicamos la ruta relativa de donde esta el Dockerfile de la imagen que debe construir para este servicio
+    #build: ./backend
+    #La otra forma de construir la imagen es:
+    build:
+      #ruta hasta la carpeta donde esta el Dockerfile
+      context: ./backend
+      #Nombre del fichero, es decir, si tu Dockerfile se llama Dockerfile, bastaria con poner la siguiente linea, o si quieres la omites porque docker-compose va a asumir que el fichero
+      #se llama Dockerfile. Ahora si el fichero no se llama Dockerfile, debes en la sig linea indicar el nombre del fichero
+      dockerfile: Dockerfile
+      #dockerfile: Dockerfile-dev
+      #Ademas podemos definir los argumentos con que se va a construir la imagen
+      args:
+        - name=value
+    #Ademas podemos definir los puertos expuestos
+    ports:
+      - '80:80'
+    volumes:
+      - logs:/app/logs
+      #Como vez tambien podemos definir binds
+      - ./backend:/app
+      #Y tambien volumenes anonimos
+      - /app/node_modules
+    env_file:
+      - ./env/mongo.env
+    #Ademas podemos definir la jerarquia de inicializacion de los contenedores  
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    #AHORA, si queremos dejar habilitado en el contenedor el modo interactivo, tenemos 2 pasos
+    #Habilitamos la captura de datos(-i)
+    stdin_open: true
+    #Habilitamos la tty (-t)
+    tty: true
+    depends_on:
+      - backend
+
+#Aqui pondremos todos los volumenes nombrados que utilizaremos (NO ES PARA LOS VOLUMENES ANONIMOS, NI LOS BINDS) 
+#La idea es que podamos utilizar si lo queremos el mismo volumen nombrado en los distintos servicios
+volumes:
+  #nombre del volumen
+  data:
+  logs:
+
+#Para construir las imagenes e iniciar los contenedores basta con: 
+#docker-compose up (pero levantarias los contenedores en modo attach, si quieres hacer lo mismo pero levantar los contenedores en modo detach seria: docker-compose up -d)
+
+#Para detener los contenedores y eliminarlos seria docker-compose down, pero esto no elimina el volumen. 
+#Si quieres tambien eliminar el volumen seria: docker-compose down -v
+
+#OJO: cuando llamamos a docker-compose up, si no indicamos --build, si la imagen para ese contenedor ya existe sera reutilizada, es decir, no sera construida,
+#pero si queremos forzar a que se construya la imagen seria: docker-compose up --build, lo anterior construira la imagen y correra el contenedor. Por otra parte, si solo
+#queremos contruir la imagen seria:
+#docker-compose build
